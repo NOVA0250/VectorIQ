@@ -1,6 +1,8 @@
 # modules/bayes.py
 
 import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def bayes_demo():
@@ -8,7 +10,7 @@ def bayes_demo():
     st.header("Bayesian Reasoning Lab")
 
     mode = st.radio(
-        "Choose Input Mode",
+        "Input Mode",
         ["Default Example", "Custom Input"]
     )
 
@@ -20,21 +22,62 @@ def bayes_demo():
 
     else:
 
-        prior = st.slider("Prior P(D)", 0.0, 1.0, 0.01)
-        sensitivity = st.slider("Sensitivity P(+|D)", 0.0, 1.0, 0.99)
-        false_positive = st.slider("False Positive P(+|~D)", 0.0, 1.0, 0.05)
+        prior = st.slider(
+            "Prior Probability P(D)",
+            0.0,
+            1.0,
+            0.01
+        )
 
-    evidence = sensitivity * prior + false_positive * (1 - prior)
+        sensitivity = st.slider(
+            "Sensitivity P(+|D)",
+            0.0,
+            1.0,
+            0.99
+        )
 
-    posterior = (sensitivity * prior) / evidence
+        false_positive = st.slider(
+            "False Positive P(+|~D)",
+            0.0,
+            1.0,
+            0.05
+        )
 
-    st.metric("Posterior Probability", f"{posterior:.4f}")
+    evidence = (
+        sensitivity * prior +
+        false_positive * (1 - prior)
+    )
 
-    st.markdown(f"""
-    <div class="glass-card">
-    <h3>Conceptual Insight</h3>
-    <p>
-    Prior belief gets updated after observing evidence using Bayes theorem.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
+    posterior = (
+        sensitivity * prior
+    ) / evidence
+
+    col1, col2 = st.columns(2)
+
+    col1.metric(
+        "Prior Probability",
+        round(prior,4)
+    )
+
+    col2.metric(
+        "Posterior Probability",
+        round(posterior,4)
+    )
+
+    categories = ["Prior","Posterior"]
+    values = [prior, posterior]
+
+    fig, ax = plt.subplots(figsize=(7,5))
+
+    ax.bar(
+        categories,
+        values,
+        color=['#6b7280','#d1d5db']
+    )
+
+    fig.patch.set_facecolor('#0f172a')
+    ax.set_facecolor('#0f172a')
+
+    ax.tick_params(colors='white')
+
+    st.pyplot(fig)
