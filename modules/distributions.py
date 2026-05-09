@@ -1,53 +1,71 @@
-# modules/distributions.py
-
 import streamlit as st
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from scipy.stats import bernoulli, binom, poisson, uniform
 
 
 def distribution_demo():
 
-    st.header("Distribution Simulation Lab")
+    st.header("Probability Distribution Lab")
 
-    mode = st.radio(
-        "Choose Input Mode",
-        ["Default Example", "Custom Input"]
+    dist = st.selectbox(
+        "Choose Distribution",
+        [
+            "Normal",
+            "Bernoulli",
+            "Binomial",
+            "Poisson",
+            "Uniform",
+            "Exponential"
+        ]
     )
 
-    if mode == "Default Example":
+    size = st.slider("Sample Size",100,10000,1000)
 
-        mean = 0
-        std = 2
-        size = 1000
+    if dist == "Normal":
 
-    else:
+        mean = st.slider("Mean",-10,10,0)
+        std = st.slider("Std",1,10,2)
 
-        mean = st.slider("Mean", -10, 10, 0)
-        std = st.slider("Std", 1, 10, 2)
-        size = st.slider("Sample Size", 100, 10000, 1000)
+        data = np.random.normal(mean,std,size)
 
-    data = np.random.normal(mean, std, size)
+    elif dist == "Bernoulli":
 
-    col1, col2, col3 = st.columns(3)
+        p = st.slider("Probability",0.0,1.0,0.5)
 
-    col1.metric("Mean", f"{np.mean(data):.2f}")
-    col2.metric("Variance", f"{np.var(data):.2f}")
-    col3.metric("Std", f"{np.std(data):.2f}")
+        data = bernoulli.rvs(p,size=size)
+
+    elif dist == "Binomial":
+
+        n = st.slider("Trials",1,100,10)
+        p = st.slider("Probability",0.0,1.0,0.5)
+
+        data = binom.rvs(n,p,size=size)
+
+    elif dist == "Poisson":
+
+        lam = st.slider("Lambda",1,20,5)
+
+        data = poisson.rvs(lam,size=size)
+
+    elif dist == "Uniform":
+
+        data = uniform.rvs(size=size)
+
+    elif dist == "Exponential":
+
+        data = np.random.exponential(scale=1,size=size)
+
+    st.metric("Mean", round(np.mean(data),2))
+    st.metric("Variance", round(np.var(data),2))
+    st.metric("Std", round(np.std(data),2))
 
     fig, ax = plt.subplots(figsize=(8,5))
 
-    sns.histplot(
-        data,
-        kde=True,
-        bins=30,
-        color='#9ca3af',
-        ax=ax
-    )
+    sns.histplot(data,kde=True,bins=30,color='#9ca3af',ax=ax)
 
     fig.patch.set_facecolor('#0f172a')
     ax.set_facecolor('#0f172a')
-
-    ax.tick_params(colors='white')
 
     st.pyplot(fig)
