@@ -1,3 +1,5 @@
+# modules/matrix_ops.py
+
 import streamlit as st
 import numpy as np
 import seaborn as sns
@@ -64,9 +66,14 @@ def matrix_demo():
 
     if isinstance(result, np.ndarray):
 
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(6,5))
 
-        sns.heatmap(result, annot=True, cmap='Greys', ax=ax)
+        sns.heatmap(
+            result,
+            annot=True,
+            cmap='Greys',
+            ax=ax
+        )
 
         fig.patch.set_facecolor('#0f172a')
         ax.set_facecolor('#0f172a')
