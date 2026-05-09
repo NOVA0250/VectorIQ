@@ -7,6 +7,8 @@ import modules.vectors as vectors
 import modules.matrix_ops as matrix_ops
 import modules.distributions as distributions
 import modules.regression as regression
+import modules.bayes as bayes
+import modules.gradient_descent as gradient_descent
 
 st.set_page_config(
     page_title="VectorIQ",
@@ -55,13 +57,17 @@ with st.sidebar:
             "Vectors",
             "Matrices",
             "Distributions",
-            "Regression"
+            "Regression",
+            "Bayes",
+            "Gradient Descent"
         ],
         icons=[
             "vector-pen",
             "grid-3x3-gap",
             "bar-chart",
-            "graph-up"
+            "graph-up",
+            "activity",
+            "bezier2"
         ],
         default_index=0
     )
@@ -77,3 +83,9 @@ elif selected == "Distributions":
 
 elif selected == "Regression":
     regression.regression_demo()
+
+elif selected == "Bayes":
+    bayes.bayes_demo()
+
+elif selected == "Gradient Descent":
+    gradient_descent.gradient_demo()
