@@ -88,32 +88,6 @@ div[data-testid="stMetric"]:hover {
     box-shadow: 0 0 22px rgba(255,255,255,0.12);
 }
 
-.stButton > button {
-    background: linear-gradient(135deg, #1f2937, #374151);
-    border: none;
-    color: white;
-    border-radius: 12px;
-    padding: 0.7rem 1.4rem;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.stButton > button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 18px rgba(255,255,255,0.18);
-}
-
-div[data-baseweb="select"] {
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-}
-
-hr {
-    border: none;
-    height: 1px;
-    background: rgba(255,255,255,0.08);
-}
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -146,28 +120,7 @@ with st.sidebar:
             "graph-up",
             "bezier2"
         ],
-        default_index=0,
-        styles={
-            "container": {
-                "padding": "8px",
-                "background-color": "transparent"
-            },
-            "icon": {
-                "color": "#d1d5db",
-                "font-size": "18px"
-            },
-            "nav-link": {
-                "font-size": "16px",
-                "text-align": "left",
-                "margin": "6px",
-                "border-radius": "12px",
-                "--hover-color": "rgba(255,255,255,0.08)",
-            },
-            "nav-link-selected": {
-                "background": "linear-gradient(135deg,#374151,#4b5563)",
-                "box-shadow": "0 0 18px rgba(255,255,255,0.08)"
-            },
-        }
+        default_index=0
     )
 
 if selected == "Vectors":
