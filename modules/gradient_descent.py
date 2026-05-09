@@ -16,7 +16,15 @@ def gradient_demo():
         0.1
     )
 
-    x = np.linspace(-10, 10, 100)
+    iterations = st.slider(
+        "Iterations",
+        5,
+        100,
+        20
+    )
+
+    x = np.linspace(-10, 10, 200)
+
     y = x ** 2
 
     current_x = 8
@@ -24,11 +32,14 @@ def gradient_demo():
     points_x = []
     points_y = []
 
-    for _ in range(20):
+    for _ in range(iterations):
 
         gradient = 2 * current_x
 
-        current_x = current_x - learning_rate * gradient
+        current_x = (
+            current_x -
+            learning_rate * gradient
+        )
 
         points_x.append(current_x)
         points_y.append(current_x ** 2)
@@ -45,7 +56,8 @@ def gradient_demo():
     ax.scatter(
         points_x,
         points_y,
-        s=80
+        s=80,
+        color='#f3f4f6'
     )
 
     fig.patch.set_facecolor('#0f172a')
@@ -54,3 +66,8 @@ def gradient_demo():
     ax.tick_params(colors='white')
 
     st.pyplot(fig)
+
+    st.metric(
+        "Final Optimized Value",
+        round(current_x,4)
+    )
