@@ -1,5 +1,3 @@
-# modules/matrix_ops.py
-
 import streamlit as st
 import numpy as np
 import seaborn as sns
@@ -10,55 +8,67 @@ def matrix_demo():
 
     st.header("Matrix Operations Lab")
 
-    mode = st.radio(
-        "Choose Input Mode",
-        ["Default Example", "Custom Input"]
+    operation = st.selectbox(
+        "Choose Matrix Operation",
+        [
+            "Addition",
+            "Subtraction",
+            "Multiplication",
+            "Transpose",
+            "Determinant",
+            "Inverse",
+            "Eigenvalues",
+            "Rank",
+            "Trace"
+        ]
     )
 
-    if mode == "Default Example":
+    A = np.array([
+        [1,2],
+        [3,4]
+    ])
 
-        A = np.array([[1, 2], [3, 4]])
-        B = np.array([[5, 6], [7, 8]])
+    B = np.array([
+        [5,6],
+        [7,8]
+    ])
 
-    else:
+    if operation == "Addition":
+        result = A + B
 
-        A = np.array([
-            [st.number_input("A11", value=1), st.number_input("A12", value=2)],
-            [st.number_input("A21", value=3), st.number_input("A22", value=4)]
-        ])
+    elif operation == "Subtraction":
+        result = A - B
 
-        B = np.array([
-            [st.number_input("B11", value=5), st.number_input("B12", value=6)],
-            [st.number_input("B21", value=7), st.number_input("B22", value=8)]
-        ])
+    elif operation == "Multiplication":
+        result = A @ B
 
-    st.subheader("Matrix A")
-    st.write(A)
+    elif operation == "Transpose":
+        result = A.T
 
-    st.subheader("Matrix B")
-    st.write(B)
+    elif operation == "Determinant":
+        result = np.linalg.det(A)
 
-    st.subheader("Addition")
-    st.write(A + B)
+    elif operation == "Inverse":
+        result = np.linalg.inv(A)
 
-    st.subheader("Matrix Multiplication")
-    st.write(A @ B)
+    elif operation == "Eigenvalues":
+        result = np.linalg.eig(A)[0]
 
-    st.subheader("Transpose")
-    st.write(A.T)
+    elif operation == "Rank":
+        result = np.linalg.matrix_rank(A)
 
-    fig, ax = plt.subplots(figsize=(6,5))
+    elif operation == "Trace":
+        result = np.trace(A)
 
-    sns.heatmap(
-        A @ B,
-        annot=True,
-        cmap="Greys",
-        linewidths=1,
-        linecolor='#374151',
-        ax=ax
-    )
+    st.write(result)
 
-    fig.patch.set_facecolor('#0f172a')
-    ax.set_facecolor('#0f172a')
+    if isinstance(result, np.ndarray):
 
-    st.pyplot(fig)
+        fig, ax = plt.subplots()
+
+        sns.heatmap(result, annot=True, cmap='Greys', ax=ax)
+
+        fig.patch.set_facecolor('#0f172a')
+        ax.set_facecolor('#0f172a')
+
+        st.pyplot(fig)
