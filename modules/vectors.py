@@ -71,9 +71,4 @@ def vector_demo():
         y=[0,v2[1]],
         mode='lines+markers',
         name='v2'
-    ))
-
-    fig.update_layout(
-        template='plotly_dark',
-        paper_bgcolor='#0f172a',
     st.plotly_chart(fig, use_container_width=True)
