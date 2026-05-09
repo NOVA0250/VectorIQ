@@ -1,8 +1,16 @@
+# modules/distributions.py
+
 import streamlit as st
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from scipy.stats import bernoulli, binom, poisson, uniform
+
+from scipy.stats import (
+    bernoulli,
+    binom,
+    poisson,
+    uniform
+)
 
 
 def distribution_demo():
@@ -21,33 +29,73 @@ def distribution_demo():
         ]
     )
 
-    size = st.slider("Sample Size",100,10000,1000)
+    size = st.slider(
+        "Sample Size",
+        100,
+        10000,
+        1000
+    )
 
     if dist == "Normal":
 
         mean = st.slider("Mean",-10,10,0)
         std = st.slider("Std",1,10,2)
 
-        data = np.random.normal(mean,std,size)
+        data = np.random.normal(
+            mean,
+            std,
+            size
+        )
 
     elif dist == "Bernoulli":
 
-        p = st.slider("Probability",0.0,1.0,0.5)
+        p = st.slider(
+            "Probability",
+            0.0,
+            1.0,
+            0.5
+        )
 
-        data = bernoulli.rvs(p,size=size)
+        data = bernoulli.rvs(
+            p,
+            size=size
+        )
 
     elif dist == "Binomial":
 
-        n = st.slider("Trials",1,100,10)
-        p = st.slider("Probability",0.0,1.0,0.5)
+        n = st.slider(
+            "Trials",
+            1,
+            100,
+            10
+        )
 
-        data = binom.rvs(n,p,size=size)
+        p = st.slider(
+            "Probability",
+            0.0,
+            1.0,
+            0.5
+        )
+
+        data = binom.rvs(
+            n,
+            p,
+            size=size
+        )
 
     elif dist == "Poisson":
 
-        lam = st.slider("Lambda",1,20,5)
+        lam = st.slider(
+            "Lambda",
+            1,
+            20,
+            5
+        )
 
-        data = poisson.rvs(lam,size=size)
+        data = poisson.rvs(
+            lam,
+            size=size
+        )
 
     elif dist == "Uniform":
 
@@ -55,15 +103,37 @@ def distribution_demo():
 
     elif dist == "Exponential":
 
-        data = np.random.exponential(scale=1,size=size)
+        data = np.random.exponential(
+            scale=1,
+            size=size
+        )
 
-    st.metric("Mean", round(np.mean(data),2))
-    st.metric("Variance", round(np.var(data),2))
-    st.metric("Std", round(np.std(data),2))
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric(
+        "Mean",
+        round(np.mean(data),2)
+    )
+
+    col2.metric(
+        "Variance",
+        round(np.var(data),2)
+    )
+
+    col3.metric(
+        "Std",
+        round(np.std(data),2)
+    )
 
     fig, ax = plt.subplots(figsize=(8,5))
 
-    sns.histplot(data,kde=True,bins=30,color='#9ca3af',ax=ax)
+    sns.histplot(
+        data,
+        kde=True,
+        bins=30,
+        color='#9ca3af',
+        ax=ax
+    )
 
     fig.patch.set_facecolor('#0f172a')
     ax.set_facecolor('#0f172a')
