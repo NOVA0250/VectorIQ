@@ -1,9 +1,12 @@
+# modules/vectors.py
+
 import streamlit as st
 import numpy as np
-import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 
 def vector_demo():
+
     st.header("Vector Similarity Lab")
 
     mode = st.radio(
@@ -33,21 +36,35 @@ def vector_demo():
 
     cos_sim = dot / (mag1 * mag2)
 
-    st.write(f"Vector 1: {v1}")
-    st.write(f"Vector 2: {v2}")
+    col1, col2 = st.columns(2)
 
-    st.write(f"Magnitude v1: {mag1:.2f}")
-    st.write(f"Magnitude v2: {mag2:.2f}")
-    st.write(f"Dot Product: {dot:.2f}")
-    st.write(f"Cosine Similarity: {cos_sim:.2f}")
+    col1.metric("Magnitude v1", f"{mag1:.2f}")
+    col1.metric("Dot Product", f"{dot:.2f}")
 
-    fig, ax = plt.subplots()
+    col2.metric("Magnitude v2", f"{mag2:.2f}")
+    col2.metric("Cosine Similarity", f"{cos_sim:.2f}")
 
-    ax.quiver(0, 0, v1[0], v1[1], angles='xy', scale_units='xy', scale=1)
-    ax.quiver(0, 0, v2[0], v2[1], angles='xy', scale_units='xy', scale=1)
+    fig = go.Figure()
 
-    ax.set_xlim(-10, 10)
-    ax.set_ylim(-10, 10)
-    ax.grid()
+    fig.add_trace(go.Scatter(
+        x=[0, v1[0]],
+        y=[0, v1[1]],
+        mode='lines+markers',
+        name='Vector 1'
+    ))
 
-    st.pyplot(fig)
+    fig.add_trace(go.Scatter(
+        x=[0, v2[0]],
+        y=[0, v2[1]],
+        mode='lines+markers',
+        name='Vector 2'
+    ))
+
+    fig.update_layout(
+        template='plotly_dark',
+        paper_bgcolor='#0f172a',
+        plot_bgcolor='#0f172a',
+        height=600
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
